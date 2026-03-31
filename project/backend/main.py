@@ -4,14 +4,19 @@ from models.Telemetry import Telemetry
 from models.Maneuver import Maneuver
 from typing import Dict, Any
 from models.SimulationStep import SimulationStep
+import physicsEngine
+
 app = FastAPI()
 
 
 @app.post("/api/telemetry")
 def telemetry(data:Telemetry):
     telemetry_data = data
-    print(telemetry_data)
-    return {'telemetry_data ': telemetry_data}
+    x=telemetry_data.objects[0].r.x
+    y=telemetry_data.objects[0].r.y
+    z=telemetry_data.objects[0].r.z
+
+    return physicsEngine.acceleration([x, y, z])
 
 @app.post("/api/maneuver/schedule")
 def schedule_maneuver(data: Maneuver):
